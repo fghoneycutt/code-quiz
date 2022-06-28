@@ -1,0 +1,21 @@
+.container {
+    margin: auto;
+    width: 100%;
+    height: 100px;
+    text-align: center;
+}
+.countdown{
+    text-align: right;
+}
+.answerChoice{
+    color: white;
+    background-color: #4b0076;
+    padding: 5px;
+    margin: .5vw;
+    border-radius: 5px;
+    display: flex;
+    border: none;
+}
+.answerChoice:hover{
+    background-color: #A865c9;
+}
