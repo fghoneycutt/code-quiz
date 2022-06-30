@@ -1,28 +1,38 @@
 var questionBankObj = [
     { //object contains the question, the index of the answer from choices, will give an Id to each choice associated to its position within the array.
         question: "A very useful tool used during development and debugging for printing content to the debugger is:",
-        answer: 3,
-        choice: ["JavaScript", "terminal/bash", "for loops", "console.log"]
+        choices: [
+            "JavaScript","terminal/bash","for loops","console.log"
+        ],
+        answer: 3
     },
     {
-        question: "String values must be encolosed within _________ when being assigned to variables.",
-        answer: 0,
-        choice: ["quotes","commas", "curly brackets", "parenthesis"]
+        question: "String values must be enclosed within ________ when being assigned to variables.",
+        choices: [
+            "commas", "curly brackets","quotes","parenthesis"
+        ],
+        answer: 2
     },
     {
-        question: "Arrays in JavaScript can be used to store _________.",
-        answer: 3,
-        choice: ["numbers and strings", "other arrays", "booleans", "all of the above"]
+        question: "Arrays in JavaScript can be used to store ________.",
+        choices: [
+           "numbers and strings","other arrays","booleans","all of the above"
+        ], 
+        answer:3
     },
-    {
-        question: "The condition in an if/else statement is enclosed with _________.",
-        answer: 1,
-        choice: ["quotes", "parenthesis", "curly brackets", "square brackets"]
+        {
+        question: "The condition in an if/else statement is enclosed with ________.",
+        choices: [
+            "quotes","parenthesis","curly brackets","square brackets"
+        ],
+        answer:1
     },
-    {
+        {
         question: "Commonly used data types do NOT include:",
-        answer: 2,
-        choice: ["strings", "booleans", "alerts", "numbers"]
+        choices: [
+            "alerts","strings","booleans","numbers"
+        ], 
+        answer:0
     }
 ];
 var timerEl = document.getElementById('countdown');
@@ -48,10 +58,10 @@ startQuiz.addEventListener('click', function() {
     }, 1000);
     }
     countdown();
-    loopThroughQuestions();
+    createQuestionStructure();
 });
 var body = document.body;
-function loopThroughQuestions(){
+function createQuestionStructure(){
     //remove intial text
     var remove = document.querySelector("#container");
     remove.parentNode.removeChild(remove);
@@ -62,6 +72,7 @@ function loopThroughQuestions(){
     var h1El = document.createElement("h1");
     questionContainer.appendChild(h1El);
     var buttonListEl = document.createElement("div");
+    buttonListEl.className = "answerContainer"
     // Create ordered list items
     var button1 = document.createElement("button");
     button1.className = "answerChoice";
@@ -75,35 +86,61 @@ function loopThroughQuestions(){
     var button4 = document.createElement("button");
     button4.className = "answerChoice";
     button4.setAttribute('id', 'choiceBtn4')
-    for (i = 0; i<questionBankObj.length; i++){
+    questionContainer.appendChild(buttonListEl);
+    buttonListEl.appendChild(button1);
+    buttonListEl.appendChild(button2);
+    buttonListEl.appendChild(button3);
+    buttonListEl.appendChild(button4);
+    // Add question and answer content to the page
+    for (i = 0; i<questionBankObj.length;){
         h1El.textContent = questionBankObj[i].question;
-        button1.textContent = "1. " + questionBankObj[i].choice[0];
-        button2.textContent = "2. " + questionBankObj[i].choice[1];
-        button3.textContent = "3. " + questionBankObj[i].choice[2];
-        button4.textContent = "4. " + questionBankObj[i].choice[3];
-        questionContainer.appendChild(buttonListEl);
-        buttonListEl.appendChild(button1);
-        buttonListEl.appendChild(button2);
-        buttonListEl.appendChild(button3);
-        buttonListEl.appendChild(button4);
-        // var answer = document.getElementById('#choiceBtn');
-        // answer.addEventListener('click', function() {
-        //     // if the wrong answer was clicked, subtract 10 seconds and move on to the next question
-        //     if (answer !== questionBankObj[i].choice[answer]){
-        //         timeInterval - timeInterval - 10;
-        //     }
-        //  });
-        document.getElementById('choiceBtn1').onclick = function(){
-            console.log("Button 1 was clicked");
-        }
-        document.getElementById('choiceBtn2').onclick = function(){
-            console.log("Button 2 was clicked");
-        }
-        document.getElementById('choiceBtn3').onclick = function(){
-            console.log("Button 3 was clicked");
-        }
-        document.getElementById('choiceBtn4').onclick = function(){
-            console.log("Button 4 was clicked");
-        }
+        button1.textContent = "1. " + questionBankObj[i].choices[0];
+        button2.textContent = "2. " + questionBankObj[i].choices[1];
+        button3.textContent = "3. " + questionBankObj[i].choices[2];
+        button4.textContent = "4. " + questionBankObj[i].choices[3];
+        checkIfRight();
     }
+}
+function checkIfRight(){
+    var button1 = document.querySelector("#choiceBtn1");
+    var button2 = document.querySelector("#choiceBtn1");
+    var button3 = document.querySelector("#choiceBtn1");
+    var button4 = document.querySelector("#choiceBtn1");
+    button1.addEventListener('click', function(){
+       if (questionBankObj[i].choices[0] === questionBankObj[i].choices[questionBankObj[i].answer]){
+        i++
+        return
+       } else {
+        timeLeft -=10
+        return
+       }
+    });
+    button2.addEventListener('click', function(){
+        if (questionBankObj[i].choices[0] === questionBankObj[i].choices[questionBankObj[i].answer]){
+        i++
+        return
+       } else {
+        timeLeft -=10
+        return
+       }
+    });
+    button3.addEventListener('click', function(){
+       if (questionBankObj[i].choices[0] === questionBankObj[i].choices[questionBankObj[i].answer]){
+        i++
+        return
+       } else {
+        timeLeft -=10
+        return
+       }
+    });
+    button4.addEventListener('click', function(){
+       if (questionBankObj[i].choices[0] === questionBankObj[i].choices[questionBankObj[i].answer]){
+        i++
+        return
+       } else {
+        timeLeft -=10
+        return
+       }
+    });
+
 }
