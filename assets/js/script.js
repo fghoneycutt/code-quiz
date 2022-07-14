@@ -107,6 +107,7 @@ var button1Clicked = function(){
     questionNumber++;
     if (questionNumber == questionBankObj.length) {
       displayGameOver();
+      return;
     } 
     nextQuestion();
   } else {
@@ -114,6 +115,7 @@ var button1Clicked = function(){
     questionNumber++;
     if (questionNumber == questionBankObj.length) {
       displayGameOver();
+      return;
     } 
     nextQuestion();
   }
@@ -124,6 +126,7 @@ var button2Clicked = function(){
     questionNumber++;
     if (questionNumber == questionBankObj.length) {
       displayGameOver();
+      return;
     } 
     nextQuestion();
   } else {
@@ -131,6 +134,7 @@ var button2Clicked = function(){
     questionNumber++;
     if (questionNumber == questionBankObj.length) {
       displayGameOver();
+      return;
     } 
     nextQuestion();
   }
@@ -141,6 +145,7 @@ var button3Clicked = function(){
     questionNumber++;
     if (questionNumber == questionBankObj.length) {
       displayGameOver();
+      return;
     } 
     nextQuestion();
   } else {
@@ -148,6 +153,7 @@ var button3Clicked = function(){
     questionNumber++;
     if (questionNumber == questionBankObj.length) {
       displayGameOver();
+      return;
     } 
     nextQuestion();
   }
@@ -158,6 +164,7 @@ var button4Clicked = function(){
     questionNumber++;
     if (questionNumber == questionBankObj.length) {
       displayGameOver();
+      return;
     } 
     nextQuestion();
   } else {
@@ -165,6 +172,7 @@ var button4Clicked = function(){
     questionNumber++;
     if (questionNumber == questionBankObj.length) {
       displayGameOver();
+      return;
     } 
     nextQuestion();
   }
