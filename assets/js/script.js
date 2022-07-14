@@ -205,7 +205,6 @@ var displayGameOver = function(){
   submitBtn.addEventListener("click", submitHandler);
 }
 var submitHandler = function(event){
-  event.preventDefault();
   var score = document.getElementById("scoreDisplay").textContent;
   score = score.replace("Your final score is ", "");
   score = parseInt(score);
@@ -215,16 +214,19 @@ var submitHandler = function(event){
     score: score
   }
   highScores.push(scoreDataObj);
-  console.log(highScores);
   document.getElementById("initials").value = "";
   localStorage.setItem("highScores", JSON.stringify(highScores));
+  displayHighScores();
 }
 
 
 var displayHighScores = function(){
   var elem = document.getElementById("container");
+  var btn = document.getElementById("high-scores");
   elem.remove();
   timerEl.remove();
+  btn.remove();
+
   // found this function to sort high scores at https://stackoverflow.com/questions/27178124/saving-objects-in-array-for-highscore-list
   highScores.sort(function (a, b) {
     return b.score - a.score;
@@ -236,6 +238,7 @@ var displayHighScores = function(){
   h1Elem.textContent = "High Scores";
   scoreScreen.appendChild(h1Elem);
   var listEl = document.createElement("ol");
+  listEl.setAttribute("id", "scoreList")
   scoreScreen.appendChild(listEl);
   // found this forEach loop to generate an HTML list from a JavaScript Array here- https://getbutterfly.com/generate-html-list-from-javascript-array/
   highScores.forEach((highScores) => {
@@ -243,6 +246,28 @@ var displayHighScores = function(){
     listEl.appendChild(li);
     li.textContent = highScores.initials + " - " + highScores.score;
   });
+  var backBtn = document.createElement("button");
+  backBtn.setAttribute("class", "btn scoreScreen");
+  backBtn.textContent = "Go back"
+  scoreScreen.appendChild(backBtn);
+  var clearBtn = document.createElement("button");
+  clearBtn.setAttribute("class", "btn scoreScreen");
+  clearBtn.textContent = "Clear high scores";
+  scoreScreen.appendChild(clearBtn);
+  backBtn.addEventListener("click", refreshPage);
+  clearBtn.addEventListener("click", clearMem);
+}
+
+
+var refreshPage = function(){
+  location.reload();
+}
+
+var clearMem = function(){
+  highScores = [];
+  localStorage.setItem("highScores", JSON.stringify(highScores));
+  var listEl = document.getElementById("scoreList")
+  listEl.remove();
 }
 
 var loadScores = function(){
@@ -258,4 +283,5 @@ var loadScores = function(){
 
 startQuiz.addEventListener("click", createQuizStructure);
 viewHighScores.addEventListener("click", displayHighScores);
+
 loadScores();

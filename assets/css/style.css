@@ -26,3 +26,12 @@
     margin: auto;
     text-align: center;
 }
+.scoreScreen{
+    margin: auto;
+    margin-bottom: 2px;
+}
+ol{
+    list-style-position: inside;
+    text-align: left;
+    display: inline-block;
+}
