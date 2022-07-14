@@ -47,7 +47,7 @@ function countdown() {
       timeLeft--;
     } else {
       clearInterval(timeInterval);
-      return;
+      displayGameOver();
     }
   }, 1000);
 }
@@ -56,6 +56,7 @@ startQuiz.addEventListener("click", function () {
   var elem = document.getElementById("container");
   elem.remove();
 });
+//create the inintial structure of the quiz, including an element to hold the question and four buttons for the answers
 var createQuizStructure = function () {
   var questionDiv = document.createElement("div");
   questionDiv.setAttribute("id", "container");
@@ -79,7 +80,7 @@ var createQuizStructure = function () {
   button4.setAttribute("id", "button4");
   button4.setAttribute("class", "btn");
   questionDiv.appendChild(button4);
-
+  //event listeners to handle correct or incorrect answers
   button1.addEventListener("click", button1Clicked);
   button2.addEventListener("click", button2Clicked);
   button3.addEventListener("click", button3Clicked);
@@ -168,7 +169,6 @@ var button4Clicked = function(){
     nextQuestion();
   }
 }
-
 //remove question content and build final score submittal 
 var displayGameOver = function(){
   var score = timeLeft;
@@ -176,6 +176,9 @@ var displayGameOver = function(){
   var elem = document.getElementById("container");
   elem.remove();
   timerEl.remove();
+  if (score < 0){
+    score = 0;
+  };
   //create game over screen elements
   var doneScreen = document.createElement("div");
   doneScreen.setAttribute("id", "container");
@@ -188,7 +191,7 @@ var displayGameOver = function(){
   h2Elem.textContent = "Your final score is " + score;
   doneScreen.appendChild(h2Elem);
   var enterInitials = document.createElement("label");
-  enterInitials.textContent = "Enter initials: "
+  enterInitials.textContent = "Enter name: "
   doneScreen.appendChild(enterInitials);
   var submit = document.createElement("input");
   submit.setAttribute("type", "text");
@@ -201,32 +204,35 @@ var displayGameOver = function(){
   submitBtn.setAttribute("class", "btn submit");
   submitBtn.textContent = "Submit";
   doneScreen.appendChild(submitBtn);
-
+  //submit button event handler
   submitBtn.addEventListener("click", submitHandler);
 }
+//
 var submitHandler = function(event){
+  //re-initialize the score as a number that can be stored
   var score = document.getElementById("scoreDisplay").textContent;
   score = score.replace("Your final score is ", "");
   score = parseInt(score);
+  //capture value of user input
   var initials = document.querySelector("input[name='initials']").value
+  //create an object that links the name and score
   var scoreDataObj = {
     initials: initials,
     score: score
   }
+  //push the data object to the highScores array
   highScores.push(scoreDataObj);
   document.getElementById("initials").value = "";
   localStorage.setItem("highScores", JSON.stringify(highScores));
   displayHighScores();
 }
-
-
 var displayHighScores = function(){
+  //remove previous screen elements
   var elem = document.getElementById("container");
   var btn = document.getElementById("high-scores");
   elem.remove();
   timerEl.remove();
   btn.remove();
-
   // found this function to sort high scores at https://stackoverflow.com/questions/27178124/saving-objects-in-array-for-highscore-list
   highScores.sort(function (a, b) {
     return b.score - a.score;
@@ -246,6 +252,7 @@ var displayHighScores = function(){
     listEl.appendChild(li);
     li.textContent = highScores.initials + " - " + highScores.score;
   });
+  //create buttons at high score page
   var backBtn = document.createElement("button");
   backBtn.setAttribute("class", "btn scoreScreen");
   backBtn.textContent = "Go back"
@@ -257,19 +264,18 @@ var displayHighScores = function(){
   backBtn.addEventListener("click", refreshPage);
   clearBtn.addEventListener("click", clearMem);
 }
-
-
+//refresh the page when the back button is clicked (brings user to beginning of quiz)
 var refreshPage = function(){
   location.reload();
 }
-
+//replace the highScores array in local storage with an empty one, and remove the current scores from the page
 var clearMem = function(){
   highScores = [];
   localStorage.setItem("highScores", JSON.stringify(highScores));
   var listEl = document.getElementById("scoreList")
   listEl.remove();
 }
-
+//populate the highScores array with the saved scores in local storage, to be displayed on the high score page
 var loadScores = function(){
   var savedScores = localStorage.getItem("highScores");
   if (!savedScores){
@@ -280,8 +286,6 @@ var loadScores = function(){
     highScores.push(savedScores[i]);
   }
 }
-
 startQuiz.addEventListener("click", createQuizStructure);
 viewHighScores.addEventListener("click", displayHighScores);
-
 loadScores();
