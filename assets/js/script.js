@@ -178,7 +178,7 @@ var displayGameOver = function(){
   timerEl.remove();
   //create game over screen elements
   var doneScreen = document.createElement("div");
-  doneScreen.setAttribute("class", "container");
+  doneScreen.setAttribute("id", "container");
   body.appendChild(doneScreen);
   var h1Elem = document.createElement("h1");
   h1Elem.textContent = "All done!"
@@ -225,10 +225,24 @@ var displayHighScores = function(){
   var elem = document.getElementById("container");
   elem.remove();
   timerEl.remove();
+  // found this function to sort high scores at https://stackoverflow.com/questions/27178124/saving-objects-in-array-for-highscore-list
+  highScores.sort(function (a, b) {
+    return b.score - a.score;
+  });
   var scoreScreen = document.createElement("div");
-  scoreScreen.setAttribute("class", "container");
-  
-  
+  scoreScreen.setAttribute("id", "container");
+  body.appendChild(scoreScreen);
+  var h1Elem = document.createElement("h1");
+  h1Elem.textContent = "High Scores";
+  scoreScreen.appendChild(h1Elem);
+  var listEl = document.createElement("ol");
+  scoreScreen.appendChild(listEl);
+  // found this forEach loop to generate an HTML list from a JavaScript Array here- https://getbutterfly.com/generate-html-list-from-javascript-array/
+  highScores.forEach((highScores) => {
+    var li = document.createElement("li");
+    listEl.appendChild(li);
+    li.textContent = highScores.initials + " - " + highScores.score;
+  });
 }
 
 var loadScores = function(){
