@@ -31,6 +31,9 @@ var questionBankObj = [
 var startQuiz = document.querySelector("#startBtn");
 var body = document.body;
 var questionNumber = 0;
+var viewHighScores = document.querySelector("#high-scores")
+//array to hold scores for saving
+var highScores = [];
 //Start countdown and quiz after button is clicked
 startQuiz.addEventListener("click", function () {
   countdown();
@@ -62,19 +65,19 @@ var createQuizStructure = function () {
   questionDiv.appendChild(question);
   var button1 = document.createElement("button");
   button1.setAttribute("id", "button1");
-  button1.setAttribute("class", "answerChoice");
+  button1.setAttribute("class", "btn");
   questionDiv.appendChild(button1);
   var button2 = document.createElement("button");
   button2.setAttribute("id", "button2");
-  button2.setAttribute("class", "answerChoice");
+  button2.setAttribute("class", "btn");
   questionDiv.appendChild(button2);
   var button3 = document.createElement("button");
   button3.setAttribute("id", "button3");
-  button3.setAttribute("class", "answerChoice");
+  button3.setAttribute("class", "btn");
   questionDiv.appendChild(button3);
   var button4 = document.createElement("button");
   button4.setAttribute("id", "button4");
-  button4.setAttribute("class", "answerChoice");
+  button4.setAttribute("class", "btn");
   questionDiv.appendChild(button4);
 
   button1.addEventListener("click", button1Clicked);
@@ -169,25 +172,76 @@ var button4Clicked = function(){
 //remove question content and build final score submittal 
 var displayGameOver = function(){
   var score = timeLeft;
-  console.log(score);
+  //remove question div and timer
   var elem = document.getElementById("container");
   elem.remove();
   timerEl.remove();
+  //create game over screen elements
   var doneScreen = document.createElement("div");
+  doneScreen.setAttribute("class", "container");
   body.appendChild(doneScreen);
   var h1Elem = document.createElement("h1");
   h1Elem.textContent = "All done!"
   doneScreen.appendChild(h1Elem);
   var h2Elem = document.createElement("h2");
+  h2Elem.setAttribute("id", "scoreDisplay")
   h2Elem.textContent = "Your final score is " + score;
   doneScreen.appendChild(h2Elem);
+  var enterInitials = document.createElement("label");
+  enterInitials.textContent = "Enter initials: "
+  doneScreen.appendChild(enterInitials);
+  var submit = document.createElement("input");
+  submit.setAttribute("type", "text");
+  submit.setAttribute("autofocus", "true");
+  submit.setAttribute("id", "initials");
+  submit.setAttribute("name", "initials");
+  doneScreen.appendChild(submit);
+  var submitBtn = document.createElement("button");
+  submitBtn.setAttribute("type", "submit");
+  submitBtn.setAttribute("class", "btn submit");
+  submitBtn.textContent = "Submit";
+  doneScreen.appendChild(submitBtn);
+
+  submitBtn.addEventListener("click", submitHandler);
+}
+var submitHandler = function(event){
+  event.preventDefault();
+  var score = document.getElementById("scoreDisplay").textContent;
+  score = score.replace("Your final score is ", "");
+  score = parseInt(score);
+  var initials = document.querySelector("input[name='initials']").value
+  var scoreDataObj = {
+    initials: initials,
+    score: score
+  }
+  highScores.push(scoreDataObj);
+  console.log(highScores);
+  document.getElementById("initials").value = "";
+  localStorage.setItem("highScores", JSON.stringify(highScores));
 }
 
-var displayHighScores = function(){
 
+var displayHighScores = function(){
+  var elem = document.getElementById("container");
+  elem.remove();
+  timerEl.remove();
   var scoreScreen = document.createElement("div");
+  scoreScreen.setAttribute("class", "container");
   
+  
+}
+
+var loadScores = function(){
+  var savedScores = localStorage.getItem("highScores");
+  if (!savedScores){
+    return false;
+  }
+  savedScores = JSON.parse(savedScores);
+  for (var i = 0; i <savedScores.length; i++){
+    highScores.push(savedScores[i]);
+  }
 }
 
 startQuiz.addEventListener("click", createQuizStructure);
 viewHighScores.addEventListener("click", displayHighScores);
+loadScores();
